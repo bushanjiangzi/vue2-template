@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <header class="header-box">
+  <div class="header-box">
+    <header>
       <div class="container">
         <a href="/" class="logo">
           <img class="logo-img" src="../assets/image/logo.png" alt="布山姜子">
@@ -10,13 +10,13 @@
           <div>
             <ul>
               <li>
-                <a href="/">首页</a>
+                <a href="/" :class="activeIndex === 1 ? 'active' : ''" @click="tabClick(1)">首页</a>
               </li>
               <li>
-                <a href="#">第二页</a>
+                <a href="#" :class="activeIndex === 2 ? 'active' : ''" @click="tabClick(2)">第二页</a>
               </li>
               <li>
-                <a href="#">第三页</a>
+                <a href="#" :class="activeIndex === 3 ? 'active' : ''" @click="tabClick(3)">第三页</a>
               </li>
             </ul>
           </div>
@@ -37,17 +37,26 @@
                   <i class="iconfont iconxiaoxi" title="消息"></i>
                 </a>
               </li>
-              <li v-if="login">
-                <a href="#">登录</a>
+              <li v-if="isLogin" >
+                <i class="head-img"></i>
               </li>
               <li v-else>
-                <i class="head-img"></i>
+                <el-button @click="showLogin">登录</el-button>
               </li>
             </ul>
           </div>
         </nav>
       </div>
     </header>
+    <el-dialog
+      title="登录"
+      :visible.sync="loginDialog"
+      width="320px"
+      :before-close="handleClose">
+      <el-input v-model="username" maxlength="16" placeholder="请输入用户名"></el-input>
+      <el-input v-model="password" maxlength="16" type="password" :show-password="true" placeholder="请输入密码"></el-input>
+      <el-button type="primary" @click="loginClick">登录</el-button>
+    </el-dialog>
   </div>
 </template>
 
@@ -56,7 +65,29 @@ export default {
   name: 'headerNav',
   data () {
     return {
-      login: true
+      activeIndex: 1,
+      isLogin: false,
+      loginDialog: false,
+      username: '',
+      password: ''
+    }
+  },
+  methods: {
+    tabClick (index) {
+      this.activeIndex = index
+    },
+    showLogin () {
+      this.username = ''
+      this.password = ''
+      this.loginDialog = true
+    },
+    handleClose () {
+      this.loginDialog = false
+    },
+    loginClick () {
+      console.log(this.username, this.password)
+      this.isLogin = true
+      this.loginDialog = false
     }
   }
 }
@@ -112,6 +143,12 @@ export default {
         }
       }
     }
+  }
+  .el-input {
+    margin-bottom: 15px;
+  }
+  .el-button{
+    width: 100%;
   }
 }
 </style>

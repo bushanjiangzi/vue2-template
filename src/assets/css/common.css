@@ -13,3 +13,8 @@
   display: flex;
   flex-wrap: wrap;
 }
+
+/* 选中激活类 */
+.active{
+  color: #007fff;
+}
